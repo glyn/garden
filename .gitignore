@@ -3,6 +3,7 @@ cookbooks/
 tmp/
 .DS_Store
 out/
-root/
 *.coverprofile
 .rootfs/
+root/bin/*
+root/linux/skeleton/bin/*
