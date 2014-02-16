@@ -14,10 +14,10 @@ source ./etc/config
 if [ -f ./run/wshd.pid ]
 then
   pid=$(cat ./run/wshd.pid)
-  path=/tmp/warden/cgroup/cpu/instance-$id
-  tasks=$path/tasks
+  cgroup_path=/tmp/warden/cgroup/instance-$id
+  tasks=$cgroup_path/tasks
 
-  if [ -d $path ]
+  if [ -d $cgroup_path ]
   then
     while true
     do
@@ -37,17 +37,12 @@ then
   rm -f ./run/wshd.pid
 
   # Remove cgroups
-  for system_path in /tmp/warden/cgroup/*
-  do
-    path=$system_path/instance-$id
-
-    if [ -d $path ]
-    then
-      # Remove nested cgroups for nested-warden
-      rmdir $path/instance* 2> /dev/null || true
-      rmdir $path
-    fi
-  done
+  if [ -d $cgroup_path ]
+  then
+    # Remove nested cgroups for nested-warden
+    rmdir $cgroup_path/instance* 2> /dev/null || true
+    rmdir $cgroup_path
+  fi
 
   exit 0
 fi

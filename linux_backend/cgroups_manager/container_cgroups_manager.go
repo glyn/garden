@@ -29,5 +29,5 @@ func (m *ContainerCgroupsManager) Get(subsystem, name string) (string, error) {
 }
 
 func (m *ContainerCgroupsManager) SubsystemPath(subsystem string) string {
-	return path.Join(m.cgroupsPath, subsystem, "instance-"+m.containerID)
+	return path.Join(m.cgroupsPath, "instance-"+m.containerID)
 }

@@ -26,7 +26,7 @@ var _ = Describe("Container cgroups", func() {
 
 	Describe("setting", func() {
 		It("writes the value to the name under the subsytem", func() {
-			containerMemoryCgroupsPath := path.Join(cgroupsPath, "memory", "instance-some-container-id")
+			containerMemoryCgroupsPath := path.Join(cgroupsPath, "instance-some-container-id")
 			err := os.MkdirAll(containerMemoryCgroupsPath, 0755)
 			Expect(err).ToNot(HaveOccurred())
 
@@ -53,7 +53,7 @@ var _ = Describe("Container cgroups", func() {
 
 	Describe("getting", func() {
 		It("reads the current value from the name under the subsystem", func() {
-			containerMemoryCgroupsPath := path.Join(cgroupsPath, "memory", "instance-some-container-id")
+			containerMemoryCgroupsPath := path.Join(cgroupsPath, "instance-some-container-id")
 
 			err := os.MkdirAll(containerMemoryCgroupsPath, 0755)
 			Expect(err).ToNot(HaveOccurred())
@@ -68,9 +68,9 @@ var _ = Describe("Container cgroups", func() {
 	})
 
 	Describe("retrieving a subsystem path", func() {
-		It("returns <path>/<subsytem>/instance-<container-id>", func() {
+		It("returns <path>/instance-<container-id>", func() {
 			Expect(cgroupsManager.SubsystemPath("memory")).To(Equal(
-				path.Join(cgroupsPath, "memory", "instance-some-container-id"),
+				path.Join(cgroupsPath, "instance-some-container-id"),
 			))
 		})
 	})

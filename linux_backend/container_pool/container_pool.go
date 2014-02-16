@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"os"
 	"os/exec"
 	"path"
 	"strconv"
@@ -78,7 +79,9 @@ func (p *LinuxContainerPool) Setup() error {
 			"CONTAINER_DEPOT_PATH=" + p.depotPath,
 			"CONTAINER_DEPOT_MOUNT_POINT_PATH=" + p.quotaManager.MountPoint(),
 			fmt.Sprintf("DISK_QUOTA_ENABLED=%v", p.quotaManager.IsEnabled()),
+
 			"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+			"DEBUG=" + os.Getenv("DEBUG"),
 		},
 	}
 
@@ -186,6 +189,7 @@ func (p *LinuxContainerPool) Create(spec backend.ContainerSpec) (linux_backend.C
 			"network_netmask=255.255.255.252",
 
 			"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+			"DEBUG=" + os.Getenv("DEBUG"),
 		},
 	}
 
@@ -299,6 +303,10 @@ func (p *LinuxContainerPool) destroy(id string) error {
 	destroy := &exec.Cmd{
 		Path: path.Join(p.rootPath, "destroy.sh"),
 		Args: []string{path.Join(p.depotPath, id)},
+		Env: []string{
+			"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+			"DEBUG=" + os.Getenv("DEBUG"),
+		},
 	}
 
 	return p.runner.Run(destroy)

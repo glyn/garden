@@ -18,28 +18,20 @@ then
   rmdir /dev/cgroup
 fi
 
-cgroup_path=/tmp/warden/cgroup
-
-if [ ! -d $cgroup_path ]
+if [ ! -d /tmp/warden/cgroup ]
 then
-  mkdir -p $cgroup_path
+  mkdir -p /tmp/warden
 
   # Mount tmpfs
-  if ! grep "${cgroup_path} " /proc/mounts | cut -d' ' -f3 | grep -q tmpfs
+  if ! grep "/tmp/warden " /proc/mounts | cut -d' ' -f3 | grep -q tmpfs
   then
-    mount -t tmpfs none $cgroup_path
+    mount -t tmpfs none /tmp/warden
   fi
 
-  # Mount cgroup subsystems individually
-  for subsystem in cpu cpuacct devices memory
-  do
-    mkdir -p $cgroup_path/$subsystem
+  mkdir -p /tmp/warden/cgroup
 
-    if ! grep -q "${cgroup_path}/$subsystem " /proc/mounts
-    then
-      mount -t cgroup -o $subsystem none $cgroup_path/$subsystem
-    fi
-  done
+  # Mount cgroup subsystems individually
+  mount -t cgroup none /tmp/warden/cgroup
 fi
 
 ./net.sh setup

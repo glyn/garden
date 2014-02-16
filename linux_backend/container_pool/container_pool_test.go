@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"net"
+	"os"
 	"os/exec"
 	"time"
 
@@ -75,6 +76,7 @@ var _ = Describe("Container pool", func() {
 						"DISK_QUOTA_ENABLED=true",
 
 						"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+						"DEBUG=" + os.Getenv("DEBUG"),
 					},
 				},
 			))
@@ -137,6 +139,7 @@ var _ = Describe("Container pool", func() {
 						"network_netmask=255.255.255.252",
 
 						"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+						"DEBUG=" + os.Getenv("DEBUG"),
 					},
 				},
 			))
