@@ -36,42 +36,42 @@ EOS
 setup_fs
 
 # Strip /dev down to the bare minimum
-rm -rf mnt/dev/*
+rm -rf tmp/monkey/dev/*
 
 # /dev/tty
-file=mnt/dev/tty
+file=tmp/monkey/dev/tty
 mknod -m 666 $file c 5 0
 chown root:tty $file
 
 # /dev/random, /dev/urandom
-file=mnt/dev/random
+file=tmp/monkey/dev/random
 mknod -m 666 $file c 1 8
 chown root:root $file
-file=mnt/dev/urandom
+file=tmp/monkey/dev/urandom
 mknod -m 666 $file c 1 9
 chown root:root $file
 
 # /dev/null, /dev/zero
-file=mnt/dev/null
+file=tmp/monkey/dev/null
 mknod -m 666 $file c 1 3
 chown root:root $file
-file=mnt/dev/zero
+file=tmp/monkey/dev/zero
 mknod -m 666 $file c 1 5
 chown root:root $file
 
 # /dev/fd, /dev/std{in,out,err}
-pushd mnt/dev > /dev/null
+pushd tmp/monkey/dev > /dev/null
 ln -s /proc/self/fd
 ln -s fd/0 stdin
 ln -s fd/1 stdout
 ln -s fd/2 stderr
 popd > /dev/null
 
-cat > mnt/etc/hostname <<-EOS
+cat > tmp/monkey/etc/hostname <<-EOS
 $id
 EOS
 
-cat > mnt/etc/hosts <<-EOS
+cat > tmp/monkey/etc/hosts <<-EOS
 127.0.0.1 localhost
 $network_container_ip $id
 EOS
@@ -84,15 +84,15 @@ EOS
 # as the nameserver.
 if [[ "$(cat /etc/resolv.conf)" == "nameserver 127.0.0.1" ]]
 then
-  cat > mnt/etc/resolv.conf <<-EOS
+  cat > tmp/monkey/etc/resolv.conf <<-EOS
 nameserver $network_host_ip
 EOS
 else
-  cp /etc/resolv.conf mnt/etc/
+  cp /etc/resolv.conf tmp/monkey/etc/
 fi
 
 # Add vcap user if not already present
-$(which chroot) mnt env -i /bin/bash -l <<-EOS
+$(which chroot) tmp/monkey env -i /bin/bash -l <<-EOS
 if ! id vcap > /dev/null 2>&1
 then
   useradd -mU -u $user_uid -s /bin/bash vcap

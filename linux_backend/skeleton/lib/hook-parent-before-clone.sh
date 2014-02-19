@@ -11,5 +11,5 @@ source ./lib/common.sh
 
 setup_fs
 
-cp bin/wshd mnt/sbin/wshd
-chmod 700 mnt/sbin/wshd
+cp bin/wshd tmp/monkey/sbin/wshd
+chmod 700 tmp/monkey/sbin/wshd

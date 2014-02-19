@@ -7,23 +7,23 @@ function overlay_directory_in_rootfs() {
   # Skip if exists
   if [ ! -d tmp/rootfs/$1 ]
   then
-    if [ -d mnt/$1 ]
+    if [ -d tmp/monkey/$1 ]
     then
-      cp -r mnt/$1 tmp/rootfs/
+      cp -r tmp/monkey/$1 tmp/rootfs/
     else
       mkdir -p tmp/rootfs/$1
     fi
   fi
 
-  mount -n --bind tmp/rootfs/$1 mnt/$1
-  mount -n --bind -o remount,$2 tmp/rootfs/$1 mnt/$1
+  mount -n --bind tmp/rootfs/$1 tmp/monkey/$1
+  mount -n --bind -o remount,$2 tmp/rootfs/$1 tmp/monkey/$1
 }
 
 function setup_fs_other() {
   mkdir -p $rootfs_path/proc
 
-  mount -n --bind $rootfs_path mnt
-  mount -n --bind -o remount,ro $rootfs_path mnt
+  mount -n --bind $rootfs_path tmp/monkey
+  mount -n --bind -o remount,ro $rootfs_path tmp/monkey
 
   overlay_directory_in_rootfs /dev rw
   overlay_directory_in_rootfs /etc rw
@@ -100,17 +100,17 @@ function should_use_aufs() {
 }
 
 function setup_fs() {
-  mkdir -p tmp/rootfs mnt
+  mkdir -p tmp/rootfs tmp/monkey
 
   if should_use_aufs; then
-    mount -n -t aufs -o br:tmp/rootfs=rw:$rootfs_path=ro+wh none mnt
+    mount -n -t aufs -o br:tmp/rootfs=rw:$rootfs_path=ro+wh none tmp/monkey
   elif should_use_overlayfs; then
-    mount -n -t overlayfs -o rw,upperdir=tmp/rootfs,lowerdir=$rootfs_path none mnt
+    mount -n -t overlayfs -o rw,upperdir=tmp/rootfs,lowerdir=$rootfs_path none tmp/monkey
   else
     setup_fs_other
   fi
 }
 
 function teardown_fs() {
-  umount mnt
+  umount tmp/monkey
 }

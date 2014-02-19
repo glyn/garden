@@ -328,7 +328,7 @@ func (p *LinuxContainerPool) writeBindMounts(
 	hook := path.Join(containerPath, "lib", "hook-child-before-pivot.sh")
 
 	for _, bm := range bindMounts {
-		dstMount := path.Join(containerPath, "mnt", bm.DstPath)
+		dstMount := path.Join(containerPath, "tmp", "monkey", bm.DstPath)
 		srcPath := bm.SrcPath
 
 		mode := "ro"

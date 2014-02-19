@@ -175,7 +175,7 @@ var _ = Describe("Container pool", func() {
 						Path: "bash",
 						Args: []string{
 							"-c",
-							"echo mkdir -p " + containerPath + "/mnt/dst/path-ro" +
+							"echo mkdir -p " + containerPath + "/tmp/monkey/dst/path-ro" +
 								" >> " + containerPath + "/lib/hook-child-before-pivot.sh",
 						},
 					},
@@ -183,7 +183,7 @@ var _ = Describe("Container pool", func() {
 						Path: "bash",
 						Args: []string{
 							"-c",
-							"echo mount -n --bind /src/path-ro " + containerPath + "/mnt/dst/path-ro" +
+							"echo mount -n --bind /src/path-ro " + containerPath + "/tmp/monkey/dst/path-ro" +
 								" >> " + containerPath + "/lib/hook-child-before-pivot.sh",
 						},
 					},
@@ -191,7 +191,7 @@ var _ = Describe("Container pool", func() {
 						Path: "bash",
 						Args: []string{
 							"-c",
-							"echo mount -n --bind -o remount,ro /src/path-ro " + containerPath + "/mnt/dst/path-ro" +
+							"echo mount -n --bind -o remount,ro /src/path-ro " + containerPath + "/tmp/monkey/dst/path-ro" +
 								" >> " + containerPath + "/lib/hook-child-before-pivot.sh",
 						},
 					},
@@ -206,7 +206,7 @@ var _ = Describe("Container pool", func() {
 						Path: "bash",
 						Args: []string{
 							"-c",
-							"echo mkdir -p " + containerPath + "/mnt/dst/path-rw" +
+							"echo mkdir -p " + containerPath + "/tmp/monkey/dst/path-rw" +
 								" >> " + containerPath + "/lib/hook-child-before-pivot.sh",
 						},
 					},
@@ -214,7 +214,7 @@ var _ = Describe("Container pool", func() {
 						Path: "bash",
 						Args: []string{
 							"-c",
-							"echo mount -n --bind /src/path-rw " + containerPath + "/mnt/dst/path-rw" +
+							"echo mount -n --bind /src/path-rw " + containerPath + "/tmp/monkey/dst/path-rw" +
 								" >> " + containerPath + "/lib/hook-child-before-pivot.sh",
 						},
 					},
@@ -222,7 +222,7 @@ var _ = Describe("Container pool", func() {
 						Path: "bash",
 						Args: []string{
 							"-c",
-							"echo mount -n --bind -o remount,rw /src/path-rw " + containerPath + "/mnt/dst/path-rw" +
+							"echo mount -n --bind -o remount,rw /src/path-rw " + containerPath + "/tmp/monkey/dst/path-rw" +
 								" >> " + containerPath + "/lib/hook-child-before-pivot.sh",
 						},
 					},

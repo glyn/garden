@@ -42,7 +42,7 @@ var _ = Describe("Running wshd", func() {
 		binDir := path.Join(containerDir, "bin")
 		libDir := path.Join(containerDir, "lib")
 		runDir := path.Join(containerDir, "run")
-		mntDir := path.Join(containerDir, "mnt")
+		mntDir := path.Join(containerDir, "tmp/monkey")
 
 		os.Mkdir(binDir, 0755)
 		os.Mkdir(libDir, 0755)
@@ -59,8 +59,8 @@ shopt -s nullglob
 
 cd $(dirname $0)/../
 
-cp bin/wshd mnt/sbin/wshd
-chmod 700 mnt/sbin/wshd
+cp bin/wshd tmp/monkey/sbin/wshd
+chmod 700 tmp/monkey/sbin/wshd
 `), 0755)
 
 		ioutil.WriteFile(path.Join(libDir, "hook-parent-after-clone.sh"), []byte(`#!/bin/bash
@@ -107,25 +107,25 @@ function overlay_directory_in_rootfs() {
   # Skip if exists
   if [ ! -d tmp/rootfs/$1 ]
   then
-    if [ -d mnt/$1 ]
+    if [ -d tmp/monkey/$1 ]
     then
-      cp -r mnt/$1 tmp/rootfs/
+      cp -r tmp/monkey/$1 tmp/rootfs/
     else
       mkdir -p tmp/rootfs/$1
     fi
   fi
 
-  mount -n --bind tmp/rootfs/$1 mnt/$1
-  mount -n --bind -o remount,$2 tmp/rootfs/$1 mnt/$1
+  mount -n --bind tmp/rootfs/$1 tmp/monkey/$1
+  mount -n --bind -o remount,$2 tmp/rootfs/$1 tmp/monkey/$1
 }
 
 function setup_fs() {
-  mkdir -p tmp/rootfs mnt
+  mkdir -p tmp/rootfs tmp/monkey
 
   mkdir -p $rootfs_path/proc
 
-  mount -n --bind $rootfs_path mnt
-  mount -n --bind -o remount,ro $rootfs_path mnt
+  mount -n --bind $rootfs_path tmp/monkey
+  mount -n --bind -o remount,ro $rootfs_path tmp/monkey
 
   overlay_directory_in_rootfs /dev rw
   overlay_directory_in_rootfs /etc rw
@@ -295,7 +295,7 @@ setup_fs
 		catSession, err := cmdtest.StartWrapped(cat, outWrapper, outWrapper)
 		Expect(err).ToNot(HaveOccurred())
 
-		Expect(catSession).ToNot(Say(" /mnt"))
+		Expect(catSession).ToNot(Say(" /tmp/monkey"))
 		Expect(catSession).To(ExitWith(0))
 	})
 
