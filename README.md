@@ -49,3 +49,54 @@ goto garden
 
 This runs the server locally and configures the Linux backend to do everything
 over SSH to the Vagrant box.
+
+# Testing
+
+## Pre-requisites
+
+* Go 1.2 or later
+* git
+* mercurial
+* godep
+
+```
+mkdir ~/go
+```
+
+Assuming Go was installed using gvm:
+```
+export GOPATH=/home/<user>/go:$GOPATH
+export PATH=$PATH:/home/<user>/go/bin
+```
+
+Download a root filesystem, extract it as root, and point to it:
+```
+curl -O http://cfstacks.s3.amazonaws.com/lucid64.dev.tgz
+sudo mkdir -p /var/warden/rootfs
+sudo tar xzf lucid64.dev.tgz -C /var/warden/rootfs
+export GARDEN_TEST_ROOTFS=/var/warden/rootfs
+```
+
+Get garden and its dependencies:
+```
+go get github.com/pivotal-cf-experimental/garden
+cd ~/go/github.com/pivotal-cf-experimental/garden
+godep restore
+```
+
+Make the C code:
+```
+make
+```
+
+Install ginkgo:
+```
+cd ~/go/github.com/onsi/ginkgo/ginkgo
+go install
+```
+
+Run the tests:
+```
+cd ~/go/github.com/pivotal-cf-experimental/garden
+ginkgo -r
+```
