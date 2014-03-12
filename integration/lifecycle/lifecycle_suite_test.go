@@ -48,6 +48,7 @@ func TestLifecycle(t *testing.T) {
 var didRunGarden bool
 
 var _ = BeforeEach(func() {
+        log.Println("BeforeEach in lifecycle_suite_test.go")
 	if didRunGarden {
 		return
 	}

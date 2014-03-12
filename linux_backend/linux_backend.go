@@ -1,6 +1,7 @@
 package linux_backend
 
 import (
+        "runtime/debug"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -69,11 +70,13 @@ func (b *LinuxBackend) Start() error {
 	if b.snapshotsPath != "" {
 		_, err := os.Stat(b.snapshotsPath)
 		if err == nil {
+			log.Println("+++++++++++++++++ Restoring snapshots ++++++++++++++++++")
 			err = b.restoreSnapshots()
 			if err != nil {
 				return err
 			}
 
+			log.Println(">>>>>>>>>>> About to remove all snapshots <<<<<<<<<<<<<<<<<<")
 			os.RemoveAll(b.snapshotsPath)
 		}
 
@@ -186,6 +189,13 @@ func (b *LinuxBackend) restoreSnapshots() error {
 			return err
 		}
 
+		 // bug fix by Glyn
+		defer func() {
+		      if err := file.Close(); err != nil {
+		      	 log.Fatal(err)
+		      }
+                }()
+
 		_, err = b.restore(file)
 		if err != nil {
 			return err
@@ -217,6 +227,11 @@ func (b *LinuxBackend) saveSnapshot(container Container) error {
 	err = os.Rename(tmpfile.Name(), snapshotPath)
 	if err != nil {
 		return &FailedToSnapshotError{err}
+	}
+	
+	log.Println("saved snapshot for", container.ID(), "in", snapshotPath)
+	if false {
+	   debug.PrintStack()
 	}
 
 	return nil

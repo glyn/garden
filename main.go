@@ -6,7 +6,12 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"runtime"
+	rdebug "runtime/debug"
+	"sort"
+	"strings"
+	"sync"
 	"syscall"
 	"time"
 
@@ -83,6 +88,7 @@ var debug = flag.Bool(
 )
 
 func main() {
+     	//dumpFilesystem("Main entry.")
 	flag.Parse()
 
 	maxProcs := runtime.NumCPU()
@@ -168,13 +174,55 @@ func main() {
 	signals := make(chan os.Signal, 1)
 
 	go func() {
-		<-signals
-		log.Println("stopping...")
+		signal := <-signals
+		log.Printf("stopping due to %v ...\n", signal)
 		wardenServer.Stop()
+
+		//dumpFilesystem("After stop.")
+				
 		os.Exit(0)
 	}()
 
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 
-	select {}
+	select {} // block the current goroutine
+}
+
+var dumpCount int
+var mutex sync.Mutex
+
+func dumpFilesystem(tag string) {
+
+        //time.Sleep(2 * time.Second)
+
+        log.Print("dumpFilesystem context:")
+	if false {
+           rdebug.PrintStack()
+	}
+
+	mutex.Lock()
+	log.Println(tag, "main.go", os.Getpid(), dumpCount, "Filesystem dump:")
+	dumpCount++
+	mutex.Unlock()
+
+	dumpGlob("Containers:", "/tmp/garden-server*/containers/*", 4)
+	dumpGlob("Snapshots:", "/tmp/garden-server*/snapshots/*", 4)
+}
+
+func dumpGlob(title string, pattern string, indent int) {
+        ind := strings.Repeat(" ", indent)
+
+	files, err := filepath.Glob(pattern)
+	if err != nil {
+		log.Fatalln("Glob failed:", err)
+	}
+
+	log.Println(ind, title);
+
+	sort.Strings(files)
+	for _, file := range files {
+	       log.Println(ind, ind, file)
+	}
+
+	os.Stderr.Sync()
 }

@@ -3,6 +3,7 @@ package garden_runner
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net"
 	"os"
 	"os/exec"
@@ -93,6 +94,8 @@ func (r *GardenRunner) Start(argv ...string) error {
 	garden.Stdout = os.Stdout
 	garden.Stderr = os.Stderr
 
+	log.Println("================ About to start garden ===================") 
+
 	_, err := cmdtest.StartWrapped(
 		garden,
 		runner_support.TeeToGinkgoWriter,
@@ -125,6 +128,8 @@ func (r *GardenRunner) Stop() error {
 		return nil
 	}
 
+	log.Println("================ About to stop garden ===================") 
+
 	err := r.gardenCmd.Process.Signal(os.Interrupt)
 	if err != nil {
 		return err
@@ -153,6 +158,7 @@ func (r *GardenRunner) DestroyContainers() error {
 		return err
 	}
 
+	log.Println(">>>>>>>>>>>>>>>>>>>> garden_runner about to remove all snapshots <<<<<<<<<<<<<<<<<<")
 	if err := os.RemoveAll(r.SnapshotsPath); err != nil {
 		return err
 	}

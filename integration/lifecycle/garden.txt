@@ -1,0 +1,115 @@
+Running Suite: Lifecycle Suite
+==============================
+Random Seed: [1m1394625178[0m
+Will run [1m1[0m of [1m21[0m specs
+
+[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m2014/03/12 11:53:00 BeforeEach in lifecycle_suite_test.go
+2014/03/12 11:53:00 ================ About to start garden ===================
+[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m2014/03/12 11:53:03 ================ About to stop garden ===================
+2014/03/12 11:53:03 ================ About to start garden ===================
+2014/03/12 11:53:04 AfterEach in drain_test.go
+2014/03/12 11:53:04 ================ About to stop garden ===================
+2014/03/12 11:53:00 set GOMAXPROCS to 4 was 1
+2014/03/12 11:53:00 [40;36mexecuting: [] df [-P /tmp/garden-server513153867/containers][0m
+Filesystem     1024-blocks    Used Available Capacity Mounted on
+/dev/sda1         15349744 7783348   6763632      54% /
+2014/03/12 11:53:00 [40;32mcommand succeeded ([] /bin/df [df -P /tmp/garden-server513153867/containers])[0m
+2014/03/12 11:53:00 setting up backend
+2014/03/12 11:53:00 [40;36mexecuting: [POOL_NETWORK=10.254.0.0/22 ALLOW_NETWORKS= DENY_NETWORKS= CONTAINER_ROOTFS_PATH=/var/warden/rootfs CONTAINER_DEPOT_PATH=/tmp/garden-server513153867/containers CONTAINER_DEPOT_MOUNT_POINT_PATH=/ DISK_QUOTA_ENABLED=false PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin] ../../linux_backend/bin/setup.sh [][0m
+ * Unloading AppArmor profiles
+   ...done.
+2014/03/12 11:53:00 [40;32mcommand succeeded ([POOL_NETWORK=10.254.0.0/22 ALLOW_NETWORKS= DENY_NETWORKS= CONTAINER_ROOTFS_PATH=/var/warden/rootfs CONTAINER_DEPOT_PATH=/tmp/garden-server513153867/containers CONTAINER_DEPOT_MOUNT_POINT_PATH=/ DISK_QUOTA_ENABLED=false PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin] ../../linux_backend/bin/setup.sh [../../linux_backend/bin/setup.sh])[0m
+2014/03/12 11:53:00 starting server; listening with unix on /tmp/garden-temp-socker997571740/warden.sock
+2014/03/12 11:53:00 +++++++++++++++++ Restoring snapshots ++++++++++++++++++
+2014/03/12 11:53:00 >>>>>>>>>>> About to remove all snapshots <<<<<<<<<<<<<<<<<<
+2014/03/12 11:53:00 [40;36mexecuting: [] ls [/tmp/garden-server513153867/containers][0m
+2014/03/12 11:53:00 [40;32mcommand succeeded ([] /bin/ls [ls /tmp/garden-server513153867/containers])[0m
+2014/03/12 11:53:01 [40;36mexecuting: [id=mlk6pi71aa5 rootfs_path=/var/warden/rootfs user_uid=10000 network_host_ip=10.254.0.1 network_container_ip=10.254.0.2 network_netmask=255.255.255.252 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin] ../../linux_backend/bin/create.sh [/tmp/garden-server513153867/containers/mlk6pi71aa5][0m
+stdin: is not a tty
+/tmp/garden-server513153867/containers/mlk6pi71aa5
+2014/03/12 11:53:01 [40;32mcommand succeeded ([id=mlk6pi71aa5 rootfs_path=/var/warden/rootfs user_uid=10000 network_host_ip=10.254.0.1 network_container_ip=10.254.0.2 network_netmask=255.255.255.252 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin] ../../linux_backend/bin/create.sh [../../linux_backend/bin/create.sh /tmp/garden-server513153867/containers/mlk6pi71aa5])[0m
+2014/03/12 11:53:01 mlk6pi71aa5 starting
+2014/03/12 11:53:01 [40;36mexecuting: [id=mlk6pi71aa5 container_iface_mtu=1500 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin] /tmp/garden-server513153867/containers/mlk6pi71aa5/start.sh [][0m
+2014/03/12 11:53:02 [40;32mcommand succeeded ([id=mlk6pi71aa5 container_iface_mtu=1500 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin] /tmp/garden-server513153867/containers/mlk6pi71aa5/start.sh [/tmp/garden-server513153867/containers/mlk6pi71aa5/start.sh])[0m
+2014/03/12 11:53:02 mlk6pi71aa5 limiting memory to 33554432 bytes
+2014/03/12 11:53:02 [40;36mspawning: [] /tmp/garden-server513153867/containers/mlk6pi71aa5/bin/oom [/tmp/warden/cgroup/memory/instance-mlk6pi71aa5][0m
+2014/03/12 11:53:02 [40;32mspawning succeeded[0m
+2014/03/12 11:53:02 mlk6pi71aa5 running process: exec ruby -e '$stdout.sync = true; puts :hello; puts ("x" * 64 * 1024 * 1024).size; puts :goodbye; exit 42'
+2014/03/12 11:53:02 [40;36mexecuting: [] mkdir [-p /tmp/garden-server513153867/containers/mlk6pi71aa5/processes/0][0m
+2014/03/12 11:53:02 [40;32mcommand succeeded ([] /bin/mkdir [mkdir -p /tmp/garden-server513153867/containers/mlk6pi71aa5/processes/0])[0m
+2014/03/12 11:53:02 [40;36mspawning: [] /tmp/garden-server513153867/containers/mlk6pi71aa5/bin/iomux-spawn [/tmp/garden-server513153867/containers/mlk6pi71aa5/processes/0 /tmp/garden-server513153867/containers/mlk6pi71aa5/bin/wsh --socket /tmp/garden-server513153867/containers/mlk6pi71aa5/run/wshd.sock --user vcap /bin/bash][0m
+2014/03/12 11:53:02 [40;32mspawning succeeded[0m
+child_pid=11898
+2014/03/12 11:53:02 [40;36mexecuting: [] /tmp/garden-server513153867/containers/mlk6pi71aa5/bin/iomux-link [-w /tmp/garden-server513153867/containers/mlk6pi71aa5/processes/0/cursors /tmp/garden-server513153867/containers/mlk6pi71aa5/processes/0][0m
+child active
+hello
+2014/03/12 11:53:03 mlk6pi71aa5 info
+2014/03/12 11:53:03 [40;36mexecuting: [ID=mlk6pi71aa5] /tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh [get_egress_info][0m
+qdisc pfifo_fast 0: root refcnt 2 bands 3 priomap  1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1
+2014/03/12 11:53:03 [40;32mcommand succeeded ([ID=mlk6pi71aa5] /tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh [/tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh get_egress_info])[0m
+2014/03/12 11:53:03 [40;36mexecuting: [ID=mlk6pi71aa5] /tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh [get_ingress_info][0m
+2014/03/12 11:53:03 [40;32mcommand succeeded ([ID=mlk6pi71aa5] /tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh [/tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh get_ingress_info])[0m
+2014/03/12 11:53:03 LinuxContainer.Events called under PID 11637 and returning []
+2014/03/12 11:53:03 stopping...
+2014/03/12 11:53:03 saving snapshot for mlk6pi71aa5
+2014/03/12 11:53:03 LinuxContainer.Events called under PID 11637 and returning []
+2014/03/12 11:53:03 mlk6pi71aa5 oom failed: signal: killed
+2014/03/12 11:53:03 saved snapshot for mlk6pi71aa5 in /tmp/garden-server513153867/snapshots/mlk6pi71aa5
+2014/03/12 11:53:03 [40;32mcommand succeeded ([] /tmp/garden-server513153867/containers/mlk6pi71aa5/bin/iomux-link [/tmp/garden-server513153867/containers/mlk6pi71aa5/bin/iomux-link -w /tmp/garden-server513153867/containers/mlk6pi71aa5/processes/0/cursors /tmp/garden-server513153867/containers/mlk6pi71aa5/processes/0])[0m
+2014/03/12 11:53:03 set GOMAXPROCS to 4 was 1
+2014/03/12 11:53:03 [40;36mexecuting: [] df [-P /tmp/garden-server513153867/containers][0m
+Filesystem     1024-blocks    Used Available Capacity Mounted on
+/dev/sda1         15349744 7786572   6760408      54% /
+2014/03/12 11:53:03 [40;32mcommand succeeded ([] /bin/df [df -P /tmp/garden-server513153867/containers])[0m
+2014/03/12 11:53:03 setting up backend
+2014/03/12 11:53:03 [40;36mexecuting: [POOL_NETWORK=10.254.0.0/22 ALLOW_NETWORKS= DENY_NETWORKS= CONTAINER_ROOTFS_PATH=/var/warden/rootfs CONTAINER_DEPOT_PATH=/tmp/garden-server513153867/containers CONTAINER_DEPOT_MOUNT_POINT_PATH=/ DISK_QUOTA_ENABLED=false PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin] ../../linux_backend/bin/setup.sh [][0m
+ * Unloading AppArmor profiles
+   ...done.
+2014/03/12 11:53:03 [40;32mcommand succeeded ([POOL_NETWORK=10.254.0.0/22 ALLOW_NETWORKS= DENY_NETWORKS= CONTAINER_ROOTFS_PATH=/var/warden/rootfs CONTAINER_DEPOT_PATH=/tmp/garden-server513153867/containers CONTAINER_DEPOT_MOUNT_POINT_PATH=/ DISK_QUOTA_ENABLED=false PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin] ../../linux_backend/bin/setup.sh [../../linux_backend/bin/setup.sh])[0m
+2014/03/12 11:53:03 starting server; listening with unix on /tmp/garden-temp-socker997571740/warden.sock
+2014/03/12 11:53:03 +++++++++++++++++ Restoring snapshots ++++++++++++++++++
+2014/03/12 11:53:03 loading snapshot for mlk6pi71aa5
+2014/03/12 11:53:03 restoring mlk6pi71aa5
+2014/03/12 11:53:03 mlk6pi71aa5 limiting memory to 33554432 bytes
+2014/03/12 11:53:03 [40;36mspawning: [] /tmp/garden-server513153867/containers/mlk6pi71aa5/bin/oom [/tmp/warden/cgroup/memory/instance-mlk6pi71aa5][0m
+2014/03/12 11:53:03 [40;32mspawning succeeded[0m
+2014/03/12 11:53:03 [40;36mexecuting: [] /tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh [setup][0m
+2014/03/12 11:53:03 [40;32mcommand succeeded ([] /tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh [/tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh setup])[0m
+2014/03/12 11:53:03 >>>>>>>>>>> About to remove all snapshots <<<<<<<<<<<<<<<<<<
+2014/03/12 11:53:03 [40;36mexecuting: [] ls [/tmp/garden-server513153867/containers][0m
+mlk6pi71aa5
+tmp
+2014/03/12 11:53:03 [40;32mcommand succeeded ([] /bin/ls [ls /tmp/garden-server513153867/containers])[0m
+2014/03/12 11:53:04 mlk6pi71aa5 info
+2014/03/12 11:53:04 [40;36mexecuting: [ID=mlk6pi71aa5] /tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh [get_egress_info][0m
+qdisc pfifo_fast 0: root refcnt 2 bands 3 priomap  1 2 2 2 1 2 0 0 1 1 1 1 1 1 1 1
+2014/03/12 11:53:04 [40;32mcommand succeeded ([ID=mlk6pi71aa5] /tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh [/tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh get_egress_info])[0m
+2014/03/12 11:53:04 [40;36mexecuting: [ID=mlk6pi71aa5] /tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh [get_ingress_info][0m
+2014/03/12 11:53:04 [40;32mcommand succeeded ([ID=mlk6pi71aa5] /tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh [/tmp/garden-server513153867/containers/mlk6pi71aa5/net.sh get_ingress_info])[0m
+2014/03/12 11:53:04 LinuxContainer.Events called under PID 11931 and returning []
+
+[90m------------------------------[0m
+[91m[1m• Failure [4.160 seconds][0m
+Through a restart
+[90m(/home/glyn/go/src/github.com/pivotal-cf-experimental/garden/integration/lifecycle/drain_test.go:332)[0m
+  a container's list of events
+  [90m(/home/glyn/go/src/github.com/pivotal-cf-experimental/garden/integration/lifecycle/drain_test.go:210)[0m
+    [91m[1mis still reported [It][0m
+    [90m(/home/glyn/go/src/github.com/pivotal-cf-experimental/garden/integration/lifecycle/drain_test.go:209)[0m
+
+    [91mTimed out after 1.091s.
+    Expected
+    	<[]string> of length 0: []string(nil)
+    to contain element
+    	<string>: "out of memory"[0m
+
+    /home/glyn/go/src/github.com/pivotal-cf-experimental/garden/integration/lifecycle/drain_test.go:201
+[90m------------------------------[0m
+[36mS[0m[36mS[0m[36mS[0m[36mS[0m[36mS[0m
+[1m[91mRan 1 of 21 Specs in 4.160 seconds[0m
+[1m[91mFAIL![0m -- [32m[1m0 Passed[0m | [91m[1m1 Failed[0m | [33m[1m0 Pending[0m | [36m[1m20 Skipped[0m 2014/03/12 11:53:04 >>>>>>>>>>>>>>>>>>>> garden_runner about to remove all snapshots <<<<<<<<<<<<<<<<<<
+--- FAIL: TestLifecycle (5.26 seconds)
+FAIL
+
+Ginkgo ran in 6.462833963s
+Test Suite Failed

@@ -1,6 +1,7 @@
 package command_runner
 
 import (
+        "runtime/debug"
 	"fmt"
 	"io"
 	"log"
@@ -94,6 +95,10 @@ func (r *RealCommandRunner) Wait(cmd *exec.Cmd) error {
 func (r *RealCommandRunner) Kill(cmd *exec.Cmd) error {
 	if cmd.Process == nil {
 		return CommandNotRunningError{cmd}
+	}
+	if r.debug {
+	   	   debug.PrintStack()
+	   	   log.Printf("Killing %#v", cmd)
 	}
 
 	return cmd.Process.Kill()

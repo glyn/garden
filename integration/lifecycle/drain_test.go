@@ -4,7 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"log"
 	"time"
+	"os"
+	"path/filepath"
+	"runtime/debug"
+	"sort"
+	"strings"
+	"sync"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -43,22 +50,30 @@ var _ = Describe("Through a restart", func() {
 	})
 
 	AfterEach(func() {
-		err := runner.Stop()
+		log.Println("AfterEach in drain_test.go")
+		/*err := runner.Stop()
 		Expect(err).ToNot(HaveOccurred())
 
 		err = runner.DestroyContainers()
 		Expect(err).ToNot(HaveOccurred())
 
 		err = runner.Start()
-		Expect(err).ToNot(HaveOccurred())
+		Expect(err).ToNot(HaveOccurred())*/
 	})
 
 	restartServer := func() {
 		err := runner.Stop()
 		Expect(err).ToNot(HaveOccurred())
 
+		//dumpFilesystem("mid restartServer")
+
+		//log.Println("About to sleep for 120 seconds")
+		//time.Sleep(120 * time.Second)
+
 		err = runner.Start()
 		Expect(err).ToNot(HaveOccurred())
+
+		//dumpFilesystem("exiting restartServer")
 	}
 
 	It("retains the container list", func() {
@@ -169,9 +184,13 @@ var _ = Describe("Through a restart", func() {
 	})
 
 	Describe("a container's list of events", func() {
-		It("is still reported", func() {
+		FIt("is still reported", func() {
+			//dumpFilesystem("start of spec")
 			_, err := client.LimitMemory(handle, 32*1024*1024)
 			Expect(err).ToNot(HaveOccurred())
+
+			log.Println("About to sleep for 120 seconds")
+			time.Sleep(120 * time.Second)
 
 			// trigger 'out of memory' event
 			_, _, err = client.Run(handle, "exec ruby -e '$stdout.sync = true; puts :hello; puts (\"x\" * 64 * 1024 * 1024).size; puts :goodbye; exit 42'")
@@ -182,7 +201,10 @@ var _ = Describe("Through a restart", func() {
 				Expect(err).ToNot(HaveOccurred())
 
 				return info.GetEvents()
-			}).Should(ContainElement("out of memory"))
+			}, 1.0, 0.01).Should(ContainElement("out of memory"))
+
+			i, _ := client.Info(handle)			
+			log.Printf("ABOUT TO RESTART SERVER %#v", i)
 
 			restartServer()
 
@@ -337,3 +359,41 @@ func streamNumbersTo(destination chan<- int, source <-chan *warden.ProcessPayloa
 		}
 	}
 }
+
+var dumpCount int
+var mutex sync.Mutex
+
+func dumpFilesystem(tag string) {
+
+        //time.Sleep(2 * time.Second)
+
+        if false {
+	   debug.PrintStack()
+	}
+
+	mutex.Lock()
+	log.Println(tag, "drain_test.go", os.Getpid(), dumpCount, "Filesystem dump:")
+	dumpCount++
+	mutex.Unlock()
+	dumpGlob("Containers:", "/tmp/garden-server*/containers/*", 4)
+	dumpGlob("Snapshots:", "/tmp/garden-server*/snapshots/*", 4)
+}
+
+func dumpGlob(title string, pattern string, indent int) {
+        ind := strings.Repeat(" ", indent)
+
+	files, err := filepath.Glob(pattern)
+	if err != nil {
+		log.Fatalln("Glob failed:", err)
+	}
+
+	log.Println(ind, title);
+
+	sort.Strings(files)
+	for _, file := range files {
+	       log.Println(ind, ind, file)
+	}
+
+	os.Stderr.Sync()
+}
+

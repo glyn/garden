@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"os"
 	"os/exec"
 	"path"
 	"strconv"
@@ -153,6 +154,8 @@ func (c *LinuxContainer) Events() []string {
 	events := make([]string, len(c.events))
 
 	copy(events, c.events)
+
+	log.Println("LinuxContainer.Events called under PID", os.Getpid(), "and returning", events)
 
 	return events
 }
@@ -651,6 +654,8 @@ func (c *LinuxContainer) registerEvent(event string) {
 	c.eventsMutex.Lock()
 	defer c.eventsMutex.Unlock()
 
+	log.Println("LinuxContainer.registerEvent called under PID", os.Getpid(), "to register", event)
+
 	c.events = append(c.events, event)
 }
 
@@ -714,6 +719,7 @@ func (c *LinuxContainer) watchForOom(oom *exec.Cmd) {
 		c.registerEvent("out of memory")
 		c.Stop(false)
 	} else {
+	        // Glyn: FFDC missing!
 		log.Println(c.id, "oom failed:", err)
 	}
 
