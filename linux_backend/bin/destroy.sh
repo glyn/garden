@@ -26,6 +26,11 @@ then
     $target/destroy.sh
   fi
 
+  for mount_point in $target/{dev,etc,home,sbin,tmp,var}
+  do
+    umount $mount_point
+  done
+
   # Retry 5 times to avoid ocational device busy
   count=0
   until `rm -rf $target` || [ $count -eq 4 ]; do
