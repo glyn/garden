@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"testing"
 
@@ -44,10 +45,21 @@ func TestLifecycle(t *testing.T) {
 		log.Fatalln("failed to create runner:", err)
 	}
 
+	defer cleanup(runner, tmpdir)
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, os.Kill)
+	go func() {
+		s := <-c
+		cleanup(runner, tmpdir)
+		log.Fatalf("Terminated by signal %s\n", s.String())
+	}()
+
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Lifecycle Suite")
+}
 
-	err = runner.Stop()
+func cleanup(runner *garden_runner.GardenRunner, tmpdir string) {
+	err := runner.Stop()
 	if err != nil {
 		log.Fatalln("garden failed to stop:", err)
 	}
