@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"syscall"
 	"time"
 
 	"github.com/cloudfoundry/gunk/runner_support"
@@ -103,7 +104,8 @@ func (r *GardenRunner) Stop() error {
 	}
 
 	err := r.gardenCmd.Process.Signal(os.Interrupt)
-	if err != nil {
+	// Ignore two errors indicating the process terminated before the signal was issued.
+	if err != nil && err.Error() != `os: process already finished` && err != syscall.ESRCH {
 		return err
 	}
 
