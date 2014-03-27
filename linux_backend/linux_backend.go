@@ -94,7 +94,16 @@ func (b *LinuxBackend) Start() error {
 		keep[container.ID()] = true
 	}
 
-	return b.containerPool.Prune(keep)
+	err = b.containerPool.Prune(keep)
+	if err != nil {
+		/*
+		   A "toxic" container which cannot be pruned should not prevent other containers
+		   from starting, so log any error from Prune and continue.
+		*/
+		log.Println("Some containers could not be pruned:", err)
+	}
+
+	return nil
 }
 
 func (b *LinuxBackend) Create(spec backend.ContainerSpec) (backend.Container, error) {
